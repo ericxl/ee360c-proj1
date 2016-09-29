@@ -76,7 +76,7 @@ public class Driver {
         return problem;
     }
 
-    private static ArrayList<Integer> readCountsList(Scanner sc, int n) {
+    public static ArrayList<Integer> readCountsList(Scanner sc, int n) {
         ArrayList<Integer> menCount = new ArrayList<Integer>(1);
 
 //        String[] m = sc.nextLine().split(" ");
@@ -89,7 +89,7 @@ public class Driver {
         return menCount;
     }
 
-    private static ArrayList<ArrayList<Integer>> readPreferenceLists(
+    public static ArrayList<ArrayList<Integer>> readPreferenceLists(
             Scanner sc, int m) {
         ArrayList<ArrayList<Integer>> preferenceLists;
         preferenceLists = new ArrayList<ArrayList<Integer>>(0);
