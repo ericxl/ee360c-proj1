@@ -12,100 +12,126 @@ import java.util.Scanner;
 
 public class UnitTest {
     @Test
-    public void testIsStableMatching() {
+    public void testIsStable1() {
         Program1 program = new Program1();
-        Matching m = parseMatchingFromString("4 4\n" +
-                "2 1 1 1 \n" +
-                "1 1 2 2 \n" +
-                "1 1 1 1 \n" +
-                "1 1 1 1 \n" +
-                "2 3 1 1 \n" +
-                "1 2 2 2 \n" +
-                "1 1 1 1 \n" +
-                "1 2 1 1 \n");
-        Matching bf = program.stableMarriageBruteForce(m);
-        Matching g = program.stableMarriageGaleShapley(m);
-        Assert.assertTrue(program.isStableMatching(bf));
+        Matching m = parseMatchingFromString("2 2\n" +
+                "1 2\n" +
+                "2 1\n" +
+                "1 2\n" +
+                "2 1");
+        ArrayList<Integer> match = new ArrayList<>();
+        match.add(0,1);
+        match.add(1,0);
+        m.setWomanMatching(match);
+        Assert.assertFalse(program.isStableMatching(m));
     }
 
     @Test
-    public void testStable1() throws Exception {
+    public void testIsStable2() {
         Program1 program = new Program1();
-        Matching matching = Driver.parseMatchingProblem("small_inputs/4.in");
-
-        ArrayList<Integer> newMatches = new ArrayList<>();
-        newMatches.add(2);
-        newMatches.add(0);
-        newMatches.add(1);
-        newMatches.add(3);
-        matching = new Matching(matching, newMatches);
-
-        Assert.assertTrue("Should be stable", program.isStableMatching(matching));
+        Matching m = parseMatchingFromString("2 2\n" +
+                "1 2\n" +
+                "1 2\n" +
+                "1 2\n" +
+                "1 2");
+        ArrayList<Integer> match = new ArrayList<>();
+        match.add(0,0);
+        match.add(1,1);
+        m.setWomanMatching(match);
+        Assert.assertTrue(program.isStableMatching(m));
     }
 
     @Test
-    public void testStable2() throws Exception {
+    public void testIsStable3() {
         Program1 program = new Program1();
-        Matching matching = Driver.parseMatchingProblem("small_inputs/4.in");
+        Matching m = parseMatchingFromString("2 2\n" +
+                "2 1\n" +
+                "2 1\n" +
+                "1 2\n" +
+                "1 2");
+        ArrayList<Integer> match1 = new ArrayList<>();
+        match1.add(0,1);
+        match1.add(1,0);
+        m.setWomanMatching(match1);
+        Assert.assertTrue(program.isStableMatching(m));
 
-        ArrayList<Integer> newMatches = new ArrayList<>();
-        newMatches.add(3);
-        newMatches.add(2);
-        newMatches.add(1);
-        newMatches.add(0);
-        matching = new Matching(matching, newMatches);
-
-        System.out.println(matching);
-
-        Assert.assertTrue("Should be stable", program.isStableMatching(matching));
+        ArrayList<Integer> match2 = new ArrayList<>();
+        match2.add(0,0);
+        match2.add(1,1);
+        m.setWomanMatching(match2);
+        Assert.assertFalse(
+                program.isStableMatching(m)
+        );
     }
 
     @Test
-    public void testUnstable() throws Exception {
+    public void testIsStable4() {
         Program1 program = new Program1();
-        Matching matching = Driver.parseMatchingProblem("small_inputs/4.in");
+        Matching m = parseMatchingFromFile("small_inputs/4.in");
 
-        ArrayList<Integer> newMatches = new ArrayList<>();
-        newMatches.add(0);
-        newMatches.add(2);
-        newMatches.add(3);
-        newMatches.add(1);
-        matching = new Matching(matching, newMatches);
+        ArrayList<Integer> match1 = new ArrayList<>();
+        match1.add(2);
+        match1.add(0);
+        match1.add(1);
+        match1.add(3);
+        m.setWomanMatching(match1);
+        Assert.assertTrue("Should be stable", program.isStableMatching(m));
 
-        System.out.println(matching);
+        ArrayList<Integer> match2 = new ArrayList<>();
+        match2.add(3);
+        match2.add(2);
+        match2.add(1);
+        match2.add(0);
+        m.setWomanMatching(match2);
+        Assert.assertTrue("Should be stable", program.isStableMatching(m));
 
-        Assert.assertFalse("Should not be stable", program.isStableMatching(matching));
+        ArrayList<Integer> match3 = new ArrayList<>();
+        match3.add(0);
+        match3.add(2);
+        match3.add(3);
+        match3.add(1);
+        m.setWomanMatching(match3);
+        Assert.assertFalse("Should not be stable", program.isStableMatching(m));
     }
 
-
-
-
     @Test
-    public void testSmallSuite1BruteForce() throws Exception {
-        for(int i = 4; i <= 10; i++) {
-            Assert.assertTrue("Should be stable", checkBruteStability("small-suite-1/" + i + ".in"));
+    public void testStableGSSnallInput() throws Exception {
+        for(int i = 4; i <= 10; i += 2) {
+            Assert.assertTrue("Should be stable", checkGSStability("small_inputs/" + i + ".in"));
         }
     }
 
     @Test
-    public void testSmallSuite1GaleShapley() throws Exception {
-        for(int i = 4; i <= 10; i++) {
-            Assert.assertTrue("Should be stable", checkGSStability("small-suite-1/" + i + ".in"));
-        }
-    }
-
-    @Test
-    public void testStableGaleShapleyLargeInput() throws Exception {
+    public void testStableGSLargeInput() throws Exception {
         for(int i = 320; i <= 1280; i *= 2) {
             Assert.assertTrue("Should be stable", checkGSStability("large_inputs/" + i + ".in"));
         }
     }
 
 
+    @Test
+    public void testBrutalSmall1() {
+        Assert.assertTrue("Should be stable", checkBruteStability("small_inputs/4.in"));
+    }
 
-    public boolean checkBruteStability(String fileName) throws Exception {
+    @Test
+    public void testBrutalSmall2() {
+        Assert.assertTrue("Should be stable", checkBruteStability("small_inputs/6.in"));
+    }
+
+    @Test
+    public void testBrutalSmall3() {
+        Assert.assertTrue("Should be stable", checkBruteStability("small_inputs/8.in"));
+    }
+
+    @Test
+    public void testBrutalSmall4() {
+        Assert.assertTrue("Should be stable", checkBruteStability("small_inputs/10.in"));
+    }
+
+    public boolean checkBruteStability(String fileName) {
         Program1 program = new Program1();
-        Matching matching = Driver.parseMatchingProblem(fileName);
+        Matching matching = parseMatchingFromFile(fileName);
         long start = System.nanoTime();
         Matching result = program.stableMarriageBruteForce(matching);
         long end = System.nanoTime();
@@ -115,9 +141,9 @@ public class UnitTest {
     }
 
 
-    public boolean checkGSStability(String fileName) throws Exception {
+    public boolean checkGSStability(String fileName) {
         Program1 program = new Program1();
-        Matching matching = Driver.parseMatchingProblem(fileName);
+        Matching matching = parseMatchingFromFile(fileName);
         long start = System.nanoTime();
         Matching result = program.stableMarriageGaleShapley(matching);
         long end = System.nanoTime();
