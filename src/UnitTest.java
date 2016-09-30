@@ -103,7 +103,7 @@ public class UnitTest {
 
     @Test
     public void testStableGSLargeInput() throws Exception {
-        for(int i = 320; i <= 1280; i *= 2) {
+        for(int i = 160; i <= 1280; i *= 2) {
             Assert.assertTrue("Should be stable", checkGSStability("large_inputs/" + i + ".in"));
         }
     }
